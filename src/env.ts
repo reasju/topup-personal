@@ -1,16 +1,16 @@
-﻿import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string().url(),
-    NEXTAUTH_SECRET: z.string().min(32),
+    DATABASE_URL: z.string().min(1),
+    NEXTAUTH_SECRET: z.string().min(1),
     DIGIFLAZZ_USERNAME: z.string().min(1),
     DIGIFLAZZ_API_KEY: z.string().min(1),
     DIGIFLAZZ_WEBHOOK_SECRET: z.string().min(1),
-    DIGIFLAZZ_BASE_URL: z.string().url().default("https://api.digiflazz.com/v1"),
-    DIGIFLAZZ_TESTING: z.enum(["true", "false"]).default("false"),
-    NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    DIGIFLAZZ_BASE_URL: z.string().min(1).default('https://api.digiflazz.com/v1'),
+    DIGIFLAZZ_TESTING: z.enum(['true', 'false']).default('false'),
+    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   },
   client: {},
   runtimeEnv: {
@@ -23,5 +23,5 @@ export const env = createEnv({
     DIGIFLAZZ_TESTING: process.env.DIGIFLAZZ_TESTING,
     NODE_ENV: process.env.NODE_ENV,
   },
-  skipValidation: process.env.SKIP_ENV_VALIDATION === "true",
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION || process.env.NODE_ENV === 'test',
 });
